@@ -1,0 +1,8 @@
+streamlit
+pandas
+plotly
+databricks-sql-connector
+openpyxl
+python-pptx
+matplotlib
+python-dotenv
