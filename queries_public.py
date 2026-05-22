@@ -128,7 +128,7 @@ TTL = 3600 * 24 * 31  # ~monthly; busts naturally when pub_end date arg changes
 def query(sql_str: str) -> pd.DataFrame:
     with get_conn().cursor() as cur:
         cur.execute(sql_str)
-        return cur.fetchall_arrow().to_pandas()
+        return cur.active_result_set.fetchall_arrow().to_pandas()
 
 
 # ── Private helpers ───────────────────────────────────────────────────────────
