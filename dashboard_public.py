@@ -48,9 +48,6 @@ try:
 except FileNotFoundError:
     ANALYST_TEXT = "*Analyst commentary not found. Add content to `analyst_insight.md`.*"
 
-ANALYST_NAME  = "Wouter Geerts"
-ANALYST_TITLE = "Senior Director, Research & Insights, Mews"
-ANALYST_PHOTO = os.path.join(os.path.dirname(__file__), "analyst_photo.jpg")
 
 # ── Session state defaults ────────────────────────────────────────────────────
 if "pub_region" not in st.session_state:
@@ -249,13 +246,7 @@ tab1, tab2, tab3, tab4 = st.tabs([
 with tab1:
     st.subheader("Analyst Insight")
     with st.container(border=True):
-        col_text, col_photo = st.columns([3, 1])
-        with col_text:
-            st.markdown(ANALYST_TEXT)
-            st.markdown(f"**{ANALYST_NAME}**  \n*{ANALYST_TITLE}*")
-        with col_photo:
-            if ANALYST_PHOTO and os.path.exists(ANALYST_PHOTO):
-                st.image(ANALYST_PHOTO, width=120)
+        st.markdown(ANALYST_TEXT)
 
 # ═══════════════════════════════════════════════════════════════════════════════
 # TAB 2 — Market KPIs
