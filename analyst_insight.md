@@ -5,4 +5,6 @@ The US hotel sector is currently operating in an environment characterized by he
 geopolitical uncertainty. Several factors are shaping travel demand patterns across the United States and neighboring
 countries. ​
 
-​
+---
+
+**[Analyst Name]** — [Title]
