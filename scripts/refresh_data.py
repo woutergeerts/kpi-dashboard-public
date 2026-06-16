@@ -302,16 +302,28 @@ def fetch_trends(conn) -> dict:
     print("  Fetching historical trends...")
     pf = _prop_base(str(PUB_START))
     df = query(f"""
-        SELECT m.calendar_date_local AS dt,
-               {REGION_CASE} AS region,
-               COUNT(DISTINCT m.pms_property_id) AS property_count,
-               {ROOM_NUMS}
-        FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
-        JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
-        WHERE {pf}
-          AND m.calendar_date_local >= '{PUB_START}'
-          AND m.calendar_date_local <  '{PUB_END}'
-          AND ({REGION_CASE}) != 'Other'
+        SELECT dt, region,
+               COUNT(DISTINCT pms_property_id) AS property_count,
+               SUM(rev_eur) AS rev_eur,
+               SUM(occ)     AS occ,
+               SUM(avail)   AS avail
+        FROM (
+            SELECT m.calendar_date_local AS dt,
+                   ({REGION_CASE})       AS region,
+                   m.pms_property_id,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.total_adjusted_net_accommodation_revenue_eur END AS rev_eur,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_directly_occupied_accommodation_resources END AS occ,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_available_accommodation_resources END AS avail
+            FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
+            JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
+            WHERE {pf}
+              AND m.calendar_date_local >= '{PUB_START}'
+              AND m.calendar_date_local <  '{PUB_END}'
+        ) t
+        WHERE region != 'Other'
         GROUP BY dt, region
         ORDER BY dt
     """, conn)
@@ -355,30 +367,54 @@ def fetch_regional(conn) -> dict:
     pf = _prop_base(str(PUB_START))
 
     df_ann = query(f"""
-        SELECT YEAR(m.calendar_date_local) AS year,
-               {REGION_CASE} AS region,
-               COUNT(DISTINCT m.pms_property_id) AS property_count,
-               {ROOM_NUMS}
-        FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
-        JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
-        WHERE {_prop_base('2024-01-01')}
-          AND YEAR(m.calendar_date_local) IN (2024, 2025, 2026)
-          AND ({REGION_CASE}) != 'Other'
+        SELECT year, region,
+               COUNT(DISTINCT pms_property_id) AS property_count,
+               SUM(rev_eur) AS rev_eur,
+               SUM(occ)     AS occ,
+               SUM(avail)   AS avail
+        FROM (
+            SELECT YEAR(m.calendar_date_local) AS year,
+                   ({REGION_CASE})             AS region,
+                   m.pms_property_id,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.total_adjusted_net_accommodation_revenue_eur END AS rev_eur,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_directly_occupied_accommodation_resources END AS occ,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_available_accommodation_resources END AS avail
+            FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
+            JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
+            WHERE {_prop_base('2024-01-01')}
+              AND YEAR(m.calendar_date_local) IN (2024, 2025, 2026)
+        ) t
+        WHERE region != 'Other'
         GROUP BY year, region
         ORDER BY region, year
     """, conn)
 
     df_mon = query(f"""
-        SELECT DATE_TRUNC('MONTH', m.calendar_date_local) AS month,
-               {REGION_CASE} AS region,
-               COUNT(DISTINCT m.pms_property_id) AS property_count,
-               {ROOM_NUMS}
-        FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
-        JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
-        WHERE {pf}
-          AND m.calendar_date_local >= '{PUB_START}'
-          AND m.calendar_date_local <  '{PUB_END}'
-          AND ({REGION_CASE}) != 'Other'
+        SELECT month, region,
+               COUNT(DISTINCT pms_property_id) AS property_count,
+               SUM(rev_eur) AS rev_eur,
+               SUM(occ)     AS occ,
+               SUM(avail)   AS avail
+        FROM (
+            SELECT DATE_TRUNC('MONTH', m.calendar_date_local) AS month,
+                   ({REGION_CASE})                            AS region,
+                   m.pms_property_id,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.total_adjusted_net_accommodation_revenue_eur END AS rev_eur,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_directly_occupied_accommodation_resources END AS occ,
+                   CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_available_accommodation_resources END AS avail
+            FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
+            JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
+            WHERE {pf}
+              AND m.calendar_date_local >= '{PUB_START}'
+              AND m.calendar_date_local <  '{PUB_END}'
+        ) t
+        WHERE region != 'Other'
         GROUP BY month, region
         ORDER BY month, region
     """, conn)
