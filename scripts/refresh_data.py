@@ -553,14 +553,15 @@ def fetch_behaviour(conn) -> dict:
     """, conn)
 
     # ── Check-in DOW ──────────────────────────────────────────────────────────
+    # Inner query is row-level (no GROUP BY) so the REGION_CASE alias is resolved
+    # before the outer GROUP BY sees it — avoids MISSING_AGGREGATION on country_name.
     df_cin = query(f"""
         SELECT year, region, dow,
-               SUM(reservations) AS reservations
+               COUNT(*) AS reservations
         FROM (
-            SELECT YEAR(r.reservation_planned_start_at)                    AS year,
-                   ({REGION_CASE})                                          AS region,
-                   DATE_FORMAT(r.reservation_planned_start_at, 'EEEE')     AS dow,
-                   COUNT(*)                                                 AS reservations
+            SELECT YEAR(r.reservation_planned_start_at)                AS year,
+                   ({REGION_CASE})                                      AS region,
+                   DATE_FORMAT(r.reservation_planned_start_at, 'EEEE') AS dow
             FROM product.facts.fct_reservations r
             JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
             WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
@@ -570,7 +571,6 @@ def fetch_behaviour(conn) -> dict:
                   < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1)
               AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
                   <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))
-            GROUP BY year, region, dow
         ) t
         WHERE region != 'Other'
         GROUP BY year, region, dow
@@ -579,12 +579,11 @@ def fetch_behaviour(conn) -> dict:
     # ── Check-out DOW ─────────────────────────────────────────────────────────
     df_cout = query(f"""
         SELECT year, region, dow,
-               SUM(reservations) AS reservations
+               COUNT(*) AS reservations
         FROM (
-            SELECT YEAR(r.reservation_planned_end_at)                    AS year,
-                   ({REGION_CASE})                                        AS region,
-                   DATE_FORMAT(r.reservation_planned_end_at, 'EEEE')     AS dow,
-                   COUNT(*)                                               AS reservations
+            SELECT YEAR(r.reservation_planned_end_at)                AS year,
+                   ({REGION_CASE})                                    AS region,
+                   DATE_FORMAT(r.reservation_planned_end_at, 'EEEE') AS dow
             FROM product.facts.fct_reservations r
             JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
             WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
@@ -594,7 +593,6 @@ def fetch_behaviour(conn) -> dict:
                   < MAKE_DATE(YEAR(r.reservation_planned_end_at), 1, 1)
               AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
                   <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_end_at), 1, 1), 90))
-            GROUP BY year, region, dow
         ) t
         WHERE region != 'Other'
         GROUP BY year, region, dow
