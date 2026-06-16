@@ -14,7 +14,7 @@ Build a public-facing hotel industry benchmark dashboard for Mews. The app reads
 | `/public/data/kpis.json` | ADR / Occupancy / RevPAR for `global`, `regions{}`, `countries{}` — each with `ytd` sub-object |
 | `/public/data/trends.json` | Daily time series for `global` (array) and `regions{}` (arrays) — each item: `{date, year, adr, revpar, occupancy}` |
 | `/public/data/regional.json` | `annual[]` and `monthly[]` for all 5 regions: `{region, year/month, adr, revpar, occupancy, property_count}` |
-| `/public/data/behaviour.json` | `annual[]`, `cancellations[]`, `lead_time[]`, `checkin_dow[]`, `checkout_dow[]` |
+| `/public/data/behaviour.json` | `global{annual[], cancellations[], lead_time[], checkin_dow[], checkout_dow[]}` and `regions{"North America": {...}, "Europe": {...}, ...}` — same shape per region |
 | `/public/analyst_insight.md` | Markdown text for Tab 1. Fetch and render as formatted text. |
 
 Load all JSON files with `fetch('/data/filename.json')` on mount.
@@ -106,15 +106,20 @@ Show a note at the top: *"Booking behaviour data covers full calendar years 2024
 | 2024 | X days | X nights | X guests |
 | 2025 | X days | X nights | X guests |
 
-Source: `behaviour.annual`.
+Source: `behaviourSlice.annual` where `behaviourSlice` is resolved as described below.
 
-**Cancellations** — two metric tiles per year (Cancellation Rate %, Avg Cancellation Window days). Source: `behaviour.cancellations`.
+**Cancellations** — two metric tiles per year (Cancellation Rate %, Avg Cancellation Window days). Source: `behaviourSlice.cancellations`.
 
-**Reservations by Lead Time** — grouped bar chart, 2024 vs 2025, X-axis = lead time buckets (`behaviour.lead_time`). Y-axis = % share.
+**Reservations by Lead Time** — grouped bar chart, 2024 vs 2025, X-axis = lead time buckets (`behaviourSlice.lead_time`). Y-axis = % share.
 
-**Arrivals by Day of Week** — bar chart, 2024 vs 2025. Source: `behaviour.checkin_dow`. Y-axis = % share.
+**Arrivals by Day of Week** — bar chart, 2024 vs 2025. Source: `behaviourSlice.checkin_dow`. Y-axis = % share.
 
-**Departures by Day of Week** — bar chart, 2024 vs 2025. Source: `behaviour.checkout_dow`. Y-axis = % share.
+**Departures by Day of Week** — bar chart, 2024 vs 2025. Source: `behaviourSlice.checkout_dow`. Y-axis = % share.
+
+**Behaviour slice resolution** — `behaviour.json` has a `global` key and a `regions` object keyed by region name. Resolve `behaviourSlice` as follows:
+- Global selected → `behaviour.global`
+- Region selected → `behaviour.regions[selectedRegion]`
+- Country selected → `behaviour.regions[parentRegionOfCountry]` (fall back to the parent region; behaviour data is not computed per country)
 
 ---
 

@@ -448,7 +448,7 @@ def fetch_regional(conn) -> dict:
 
     return out
 
-# ── Booking behaviour (Tab 4 — global, 2024 & 2025 only) ─────────────────────
+# ── Booking behaviour (Tab 4 — global + per region, 2024 & 2025 only) ────────
 
 def fetch_behaviour(conn) -> dict:
     print("  Fetching booking behaviour...")
@@ -457,175 +457,248 @@ def fetch_behaviour(conn) -> dict:
                        "15-30 days","31-60 days","61-90 days","90+ days"]
     DOW_ORDER = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
 
-    pf_cohort = (
-        "p.is_deleted = FALSE AND p.subscription_state = 'Enabled' "
-        "AND CAST(p.pms_property_created_at AS DATE) < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1) "
-        "AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE) "
-        "    <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))"
-    )
+    # All queries use the subquery pattern so GROUP BY operates on resolved column
+    # aliases rather than CASE expressions — avoids Databricks MISSING_AGGREGATION.
+    # Weighted sums (total_los, res_count etc.) allow correct global re-aggregation
+    # across regions without averaging averages.
 
-    # Annual averages
+    # ── Annual averages ───────────────────────────────────────────────────────
     df_avg = query(f"""
-        SELECT YEAR(r.reservation_planned_start_at) AS year,
-               COUNT(DISTINCT r.pms_property_id) AS property_count,
-               AVG(DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at)) AS avg_los,
-               AVG(r.person_count) AS avg_group_size,
-               AVG(DATEDIFF(r.reservation_planned_start_at, r.reservation_created_at)) AS avg_lead_time
-        FROM product.facts.fct_reservations r
-        JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
-        WHERE {pf_cohort}
-          AND r.reservation_state_code NOT IN (4) AND r.is_reservation_deleted = FALSE
-          AND YEAR(r.reservation_planned_start_at) IN (2024, 2025)
-        GROUP BY year ORDER BY year
+        SELECT year, region,
+               COUNT(DISTINCT pms_property_id) AS property_count,
+               SUM(los)        AS total_los,
+               SUM(group_size) AS total_group_size,
+               SUM(lead_time)  AS total_lead_time,
+               COUNT(*)        AS res_count
+        FROM (
+            SELECT YEAR(r.reservation_planned_start_at)                                    AS year,
+                   ({REGION_CASE})                                                          AS region,
+                   r.pms_property_id,
+                   DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at)  AS los,
+                   r.person_count                                                           AS group_size,
+                   DATEDIFF(r.reservation_planned_start_at, r.reservation_created_at)      AS lead_time
+            FROM product.facts.fct_reservations r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.reservation_state_code NOT IN (4) AND r.is_reservation_deleted = FALSE
+              AND YEAR(r.reservation_planned_start_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region
+        ORDER BY year, region
     """, conn)
 
-    # Cancellations
-    pf_canc = (
-        "p.is_deleted = FALSE AND p.subscription_state = 'Enabled' "
-        "AND r.is_reservation_deleted = FALSE "
-        "AND CAST(p.pms_property_created_at AS DATE) < MAKE_DATE(YEAR(r.reservation_created_at), 1, 1) "
-        "AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE) "
-        "    <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_created_at), 1, 1), 90))"
-    )
+    # ── Cancellations ─────────────────────────────────────────────────────────
     df_canc = query(f"""
-        SELECT YEAR(r.reservation_created_at) AS year,
-               COUNT(DISTINCT r.pms_property_id) AS property_count,
-               COUNT(*) AS total_bookings,
-               SUM(CASE WHEN r.reservation_state_code = 4 THEN 1 ELSE 0 END) AS cancellations,
-               AVG(CASE WHEN r.reservation_state_code = 4
-                   THEN DATEDIFF(r.reservation_planned_start_at, r.reservation_canceled_at)
-                   ELSE NULL END) AS avg_cancel_window
-        FROM product.facts.fct_reservations r
-        JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
-        WHERE {pf_canc}
-          AND YEAR(r.reservation_created_at) IN (2024, 2025)
-        GROUP BY year ORDER BY year
+        SELECT year, region,
+               COUNT(DISTINCT pms_property_id) AS property_count,
+               COUNT(*)              AS total_bookings,
+               SUM(is_cancelled)     AS cancellations,
+               SUM(cancel_days)      AS total_cancel_days
+        FROM (
+            SELECT YEAR(r.reservation_created_at)                                           AS year,
+                   ({REGION_CASE})                                                          AS region,
+                   r.pms_property_id,
+                   CASE WHEN r.reservation_state_code = 4 THEN 1 ELSE 0 END                AS is_cancelled,
+                   CASE WHEN r.reservation_state_code = 4
+                        THEN DATEDIFF(r.reservation_planned_start_at, r.reservation_canceled_at)
+                        ELSE 0 END                                                          AS cancel_days
+            FROM product.facts.fct_reservations r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.is_reservation_deleted = FALSE
+              AND YEAR(r.reservation_created_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.reservation_created_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_created_at), 1, 1), 90))
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region
+        ORDER BY year, region
     """, conn)
 
-    # Lead time distribution (% share per bucket per year)
-    pf_lt = (
-        "p.is_deleted = FALSE AND p.subscription_state = 'Enabled' "
-        "AND r.reservation_state != 'Canceled' AND r.lead_time_days IS NOT NULL "
-        "AND CAST(p.pms_property_created_at AS DATE) < MAKE_DATE(YEAR(r.backfilled_reservation_started_at), 1, 1) "
-        "AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE) "
-        "    <= DATE_SUB(MAKE_DATE(YEAR(r.backfilled_reservation_started_at), 1, 1), 90))"
-    )
+    # ── Lead time distribution ────────────────────────────────────────────────
     df_lt = query(f"""
-        SELECT YEAR(r.backfilled_reservation_started_at) AS year,
-               CASE WHEN r.lead_time_days = 0 THEN '0 - Same day'
-                    WHEN r.lead_time_days BETWEEN 1  AND 3  THEN '1-3 days'
-                    WHEN r.lead_time_days BETWEEN 4  AND 7  THEN '4-7 days'
-                    WHEN r.lead_time_days BETWEEN 8  AND 14 THEN '8-14 days'
-                    WHEN r.lead_time_days BETWEEN 15 AND 30 THEN '15-30 days'
-                    WHEN r.lead_time_days BETWEEN 31 AND 60 THEN '31-60 days'
-                    WHEN r.lead_time_days BETWEEN 61 AND 90 THEN '61-90 days'
-                    ELSE '90+ days' END AS bucket,
-               SUM(r.count_reservations) AS reservations
-        FROM product.marts.mrt_reservations_and_guests r
-        JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
-        WHERE {pf_lt}
-          AND YEAR(r.backfilled_reservation_started_at) IN (2024, 2025)
-        GROUP BY year, bucket
+        SELECT year, region, bucket,
+               SUM(reservations) AS reservations
+        FROM (
+            SELECT YEAR(r.backfilled_reservation_started_at)                                AS year,
+                   ({REGION_CASE})                                                          AS region,
+                   CASE WHEN r.lead_time_days = 0                THEN '0 - Same day'
+                        WHEN r.lead_time_days BETWEEN  1 AND  3  THEN '1-3 days'
+                        WHEN r.lead_time_days BETWEEN  4 AND  7  THEN '4-7 days'
+                        WHEN r.lead_time_days BETWEEN  8 AND 14  THEN '8-14 days'
+                        WHEN r.lead_time_days BETWEEN 15 AND 30  THEN '15-30 days'
+                        WHEN r.lead_time_days BETWEEN 31 AND 60  THEN '31-60 days'
+                        WHEN r.lead_time_days BETWEEN 61 AND 90  THEN '61-90 days'
+                        ELSE '90+ days' END                                                 AS bucket,
+                   r.count_reservations                                                     AS reservations
+            FROM product.marts.mrt_reservations_and_guests r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.reservation_state != 'Canceled' AND r.lead_time_days IS NOT NULL
+              AND YEAR(r.backfilled_reservation_started_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.backfilled_reservation_started_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.backfilled_reservation_started_at), 1, 1), 90))
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region, bucket
     """, conn)
 
-    # Check-in / Check-out DOW
-    pf_dow = (
-        "p.is_deleted = FALSE AND p.subscription_state = 'Enabled' "
-        "AND r.is_reservation_deleted = FALSE AND r.reservation_state_code NOT IN (4)"
-    )
+    # ── Check-in DOW ──────────────────────────────────────────────────────────
     df_cin = query(f"""
-        SELECT YEAR(r.reservation_planned_start_at) AS year,
-               DATE_FORMAT(r.reservation_planned_start_at, 'EEEE') AS dow,
-               COUNT(*) AS reservations
-        FROM product.facts.fct_reservations r
-        JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
-        WHERE {pf_dow}
-          AND YEAR(r.reservation_planned_start_at) IN (2024, 2025)
-          AND CAST(p.pms_property_created_at AS DATE) < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1)
-          AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
-              <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))
-        GROUP BY year, dow
+        SELECT year, region, dow,
+               SUM(reservations) AS reservations
+        FROM (
+            SELECT YEAR(r.reservation_planned_start_at)                    AS year,
+                   ({REGION_CASE})                                          AS region,
+                   DATE_FORMAT(r.reservation_planned_start_at, 'EEEE')     AS dow,
+                   COUNT(*)                                                 AS reservations
+            FROM product.facts.fct_reservations r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.is_reservation_deleted = FALSE AND r.reservation_state_code NOT IN (4)
+              AND YEAR(r.reservation_planned_start_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))
+            GROUP BY year, region, dow
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region, dow
     """, conn)
 
+    # ── Check-out DOW ─────────────────────────────────────────────────────────
     df_cout = query(f"""
-        SELECT YEAR(r.reservation_planned_end_at) AS year,
-               DATE_FORMAT(r.reservation_planned_end_at, 'EEEE') AS dow,
-               COUNT(*) AS reservations
-        FROM product.facts.fct_reservations r
-        JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
-        WHERE {pf_dow}
-          AND YEAR(r.reservation_planned_end_at) IN (2024, 2025)
-          AND CAST(p.pms_property_created_at AS DATE) < MAKE_DATE(YEAR(r.reservation_planned_end_at), 1, 1)
-          AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
-              <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_end_at), 1, 1), 90))
-        GROUP BY year, dow
+        SELECT year, region, dow,
+               SUM(reservations) AS reservations
+        FROM (
+            SELECT YEAR(r.reservation_planned_end_at)                    AS year,
+                   ({REGION_CASE})                                        AS region,
+                   DATE_FORMAT(r.reservation_planned_end_at, 'EEEE')     AS dow,
+                   COUNT(*)                                               AS reservations
+            FROM product.facts.fct_reservations r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.is_reservation_deleted = FALSE AND r.reservation_state_code NOT IN (4)
+              AND YEAR(r.reservation_planned_end_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.reservation_planned_end_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_end_at), 1, 1), 90))
+            GROUP BY year, region, dow
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region, dow
     """, conn)
 
-    # ── Structure output ──────────────────────────────────────────────────────
+    # ── Convert numeric columns ───────────────────────────────────────────────
+    for df_b, cols in [
+        (df_avg,  ["property_count", "total_los", "total_group_size", "total_lead_time", "res_count"]),
+        (df_canc, ["property_count", "total_bookings", "cancellations", "total_cancel_days"]),
+        (df_lt,   ["reservations"]),
+        (df_cin,  ["reservations"]),
+        (df_cout, ["reservations"]),
+    ]:
+        if not df_b.empty:
+            for c in cols:
+                df_b[c] = _num(df_b, c)
 
-    out = {"annual": [], "cancellations": [], "lead_time": [], "checkin_dow": [], "checkout_dow": []}
+    # ── Helper: build one behaviour dict for global or a specific region ───────
+    def _build_slice(region_filter=None):
+        def _filt(df):
+            if df.empty:
+                return df
+            return df[df["region"] == region_filter] if region_filter else df
 
-    if not df_avg.empty:
-        for c in ["avg_los", "avg_group_size", "avg_lead_time", "property_count"]:
-            df_avg[c] = _num(df_avg, c)
-        for _, r in df_avg.iterrows():
-            if r["property_count"] >= MIN_PROPERTIES:
-                out["annual"].append({
-                    "year": int(r["year"]),
-                    "avg_los":        round(float(r["avg_los"]), 1),
-                    "avg_group_size": round(float(r["avg_group_size"]), 1),
-                    "avg_lead_time":  round(float(r["avg_lead_time"]), 1),
+        avg  = _filt(df_avg)
+        canc = _filt(df_canc)
+        lt   = _filt(df_lt)
+        cin  = _filt(df_cin)
+        cout = _filt(df_cout)
+
+        result = {"annual": [], "cancellations": [], "lead_time": [], "checkin_dow": [], "checkout_dow": []}
+
+        if not avg.empty:
+            for yr in [2024, 2025]:
+                yr_df = avg[avg["year"] == yr]
+                if yr_df.empty or yr_df["property_count"].sum() < MIN_PROPERTIES:
+                    continue
+                rc = float(yr_df["res_count"].sum())
+                if rc <= 0:
+                    continue
+                result["annual"].append({
+                    "year":           yr,
+                    "avg_los":        round(float(yr_df["total_los"].sum())        / rc, 1),
+                    "avg_group_size": round(float(yr_df["total_group_size"].sum()) / rc, 1),
+                    "avg_lead_time":  round(float(yr_df["total_lead_time"].sum())  / rc, 1),
                 })
 
-    if not df_canc.empty:
-        for c in ["total_bookings", "cancellations", "avg_cancel_window", "property_count"]:
-            df_canc[c] = _num(df_canc, c)
-        for _, r in df_canc.iterrows():
-            if r["property_count"] >= MIN_PROPERTIES and r["total_bookings"] > 0:
-                out["cancellations"].append({
-                    "year": int(r["year"]),
-                    "cancel_rate":       round(float(r["cancellations"]) / float(r["total_bookings"]) * 100, 1),
-                    "avg_cancel_window": round(float(r["avg_cancel_window"]), 1),
+        if not canc.empty:
+            for yr in [2024, 2025]:
+                yr_df = canc[canc["year"] == yr]
+                if yr_df.empty or yr_df["property_count"].sum() < MIN_PROPERTIES:
+                    continue
+                tb = float(yr_df["total_bookings"].sum())
+                ca = float(yr_df["cancellations"].sum())
+                cd = float(yr_df["total_cancel_days"].sum())
+                if tb <= 0:
+                    continue
+                result["cancellations"].append({
+                    "year":              yr,
+                    "cancel_rate":       round(ca / tb * 100, 1),
+                    "avg_cancel_window": round(cd / ca, 1) if ca > 0 else 0,
                 })
 
-    if not df_lt.empty:
-        df_lt["reservations"] = _num(df_lt, "reservations")
-        totals = df_lt.groupby("year")["reservations"].sum().to_dict()
-        pivot = {}
-        for _, r in df_lt.iterrows():
-            b, yr = r["bucket"], str(int(r["year"]))
-            pivot.setdefault(b, {})[yr] = float(r["reservations"])
-        for bucket in LEAD_TIME_ORDER:
-            if bucket in pivot:
-                entry = {"bucket": bucket}
-                for yr in ["2024", "2025"]:
-                    cnt = pivot[bucket].get(yr, 0)
-                    tot = totals.get(int(yr), 1)
-                    entry[yr] = round(cnt / tot * 100, 1)
-                out["lead_time"].append(entry)
+        if not lt.empty:
+            yr_totals = lt.groupby("year")["reservations"].sum().to_dict()
+            pivot = {}
+            for _, r in lt.iterrows():
+                b, yr_s = r["bucket"], str(int(r["year"]))
+                pivot.setdefault(b, {})[yr_s] = pivot.get(b, {}).get(yr_s, 0) + float(r["reservations"])
+            for bucket in LEAD_TIME_ORDER:
+                if bucket in pivot:
+                    entry = {"bucket": bucket}
+                    for yr_s in ["2024", "2025"]:
+                        cnt = pivot[bucket].get(yr_s, 0)
+                        tot = float(yr_totals.get(int(yr_s), 1))
+                        entry[yr_s] = round(cnt / tot * 100, 1) if tot > 0 else 0
+                    result["lead_time"].append(entry)
 
-    def _pivot_dow(df_dow):
-        if df_dow.empty:
-            return []
-        df_dow["reservations"] = _num(df_dow, "reservations")
-        totals = df_dow.groupby("year")["reservations"].sum().to_dict()
-        pivot = {}
-        for _, r in df_dow.iterrows():
-            pivot.setdefault(r["dow"], {})[str(int(r["year"]))] = float(r["reservations"])
-        rows = []
-        for day in DOW_ORDER:
-            if day in pivot:
-                entry = {"day": day}
-                for yr in ["2024", "2025"]:
-                    cnt = pivot[day].get(yr, 0)
-                    tot = totals.get(int(yr), 1)
-                    entry[yr] = round(cnt / tot * 100, 1)
-                rows.append(entry)
-        return rows
+        def _dow_pivot(df_dow):
+            if df_dow.empty:
+                return []
+            yr_totals = df_dow.groupby("year")["reservations"].sum().to_dict()
+            pivot = {}
+            for _, r in df_dow.iterrows():
+                d, yr_s = r["dow"], str(int(r["year"]))
+                pivot.setdefault(d, {})[yr_s] = pivot.get(d, {}).get(yr_s, 0) + float(r["reservations"])
+            rows = []
+            for day in DOW_ORDER:
+                if day in pivot:
+                    entry = {"day": day}
+                    for yr_s in ["2024", "2025"]:
+                        cnt = pivot[day].get(yr_s, 0)
+                        tot = float(yr_totals.get(int(yr_s), 1))
+                        entry[yr_s] = round(cnt / tot * 100, 1) if tot > 0 else 0
+                    rows.append(entry)
+            return rows
 
-    out["checkin_dow"]  = _pivot_dow(df_cin)
-    out["checkout_dow"] = _pivot_dow(df_cout)
+        result["checkin_dow"]  = _dow_pivot(cin)
+        result["checkout_dow"] = _dow_pivot(cout)
+        return result
 
+    # ── Build output: global + one slice per region ───────────────────────────
+    out = {"global": _build_slice()}
+    out["regions"] = {region: _build_slice(region) for region in REGION_ORDER}
     return out
 
 # ── FX rate ───────────────────────────────────────────────────────────────────
