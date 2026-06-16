@@ -1,1 +1,766 @@
-{}
+{
+  "annual": [
+    {
+      "region": "APAC",
+      "year": 2024,
+      "property_count": 164,
+      "adr": 61.26,
+      "revpar": 38.8,
+      "occupancy": 63.3
+    },
+    {
+      "region": "APAC",
+      "year": 2025,
+      "property_count": 164,
+      "adr": 62.31,
+      "revpar": 39.87,
+      "occupancy": 64.0
+    },
+    {
+      "region": "APAC",
+      "year": 2026,
+      "property_count": 164,
+      "adr": 60.72,
+      "revpar": 39.09,
+      "occupancy": 64.4
+    },
+    {
+      "region": "Europe",
+      "year": 2024,
+      "property_count": 2297,
+      "adr": 114.88,
+      "revpar": 76.82,
+      "occupancy": 66.9
+    },
+    {
+      "region": "Europe",
+      "year": 2025,
+      "property_count": 2293,
+      "adr": 117.34,
+      "revpar": 78.32,
+      "occupancy": 66.7
+    },
+    {
+      "region": "Europe",
+      "year": 2026,
+      "property_count": 2291,
+      "adr": 114.41,
+      "revpar": 73.68,
+      "occupancy": 64.4
+    },
+    {
+      "region": "MEA",
+      "year": 2024,
+      "property_count": 69,
+      "adr": 65.25,
+      "revpar": 34.34,
+      "occupancy": 52.6
+    },
+    {
+      "region": "MEA",
+      "year": 2025,
+      "property_count": 69,
+      "adr": 72.87,
+      "revpar": 41.06,
+      "occupancy": 56.3
+    },
+    {
+      "region": "MEA",
+      "year": 2026,
+      "property_count": 69,
+      "adr": 80.43,
+      "revpar": 42.61,
+      "occupancy": 53.0
+    },
+    {
+      "region": "North America",
+      "year": 2024,
+      "property_count": 150,
+      "adr": 162.88,
+      "revpar": 100.77,
+      "occupancy": 61.9
+    },
+    {
+      "region": "North America",
+      "year": 2025,
+      "property_count": 150,
+      "adr": 160.71,
+      "revpar": 92.66,
+      "occupancy": 57.7
+    },
+    {
+      "region": "North America",
+      "year": 2026,
+      "property_count": 150,
+      "adr": 155.37,
+      "revpar": 84.57,
+      "occupancy": 54.4
+    },
+    {
+      "region": "South America",
+      "year": 2024,
+      "property_count": 67,
+      "adr": 115.78,
+      "revpar": 56.2,
+      "occupancy": 48.5
+    },
+    {
+      "region": "South America",
+      "year": 2025,
+      "property_count": 67,
+      "adr": 131.41,
+      "revpar": 63.23,
+      "occupancy": 48.1
+    },
+    {
+      "region": "South America",
+      "year": 2026,
+      "property_count": 66,
+      "adr": 146.72,
+      "revpar": 70.39,
+      "occupancy": 48.0
+    }
+  ],
+  "monthly": [
+    {
+      "region": "APAC",
+      "month": "2025-01",
+      "property_count": 216,
+      "adr": 67.41,
+      "revpar": 47.78,
+      "occupancy": 70.9
+    },
+    {
+      "region": "Europe",
+      "month": "2025-01",
+      "property_count": 3446,
+      "adr": 103.92,
+      "revpar": 56.44,
+      "occupancy": 54.3
+    },
+    {
+      "region": "MEA",
+      "month": "2025-01",
+      "property_count": 77,
+      "adr": 82.37,
+      "revpar": 39.82,
+      "occupancy": 48.3
+    },
+    {
+      "region": "North America",
+      "month": "2025-01",
+      "property_count": 351,
+      "adr": 139.22,
+      "revpar": 44.09,
+      "occupancy": 31.7
+    },
+    {
+      "region": "South America",
+      "month": "2025-01",
+      "property_count": 83,
+      "adr": 165.12,
+      "revpar": 90.6,
+      "occupancy": 54.9
+    },
+    {
+      "region": "APAC",
+      "month": "2025-02",
+      "property_count": 216,
+      "adr": 63.27,
+      "revpar": 46.31,
+      "occupancy": 73.2
+    },
+    {
+      "region": "Europe",
+      "month": "2025-02",
+      "property_count": 3445,
+      "adr": 108.63,
+      "revpar": 64.29,
+      "occupancy": 59.2
+    },
+    {
+      "region": "MEA",
+      "month": "2025-02",
+      "property_count": 77,
+      "adr": 83.07,
+      "revpar": 43.65,
+      "occupancy": 52.5
+    },
+    {
+      "region": "North America",
+      "month": "2025-02",
+      "property_count": 351,
+      "adr": 152.09,
+      "revpar": 55.14,
+      "occupancy": 36.3
+    },
+    {
+      "region": "South America",
+      "month": "2025-02",
+      "property_count": 83,
+      "adr": 165.79,
+      "revpar": 91.85,
+      "occupancy": 55.4
+    },
+    {
+      "region": "APAC",
+      "month": "2025-03",
+      "property_count": 216,
+      "adr": 60.78,
+      "revpar": 42.17,
+      "occupancy": 69.4
+    },
+    {
+      "region": "Europe",
+      "month": "2025-03",
+      "property_count": 3445,
+      "adr": 107.75,
+      "revpar": 65.45,
+      "occupancy": 60.7
+    },
+    {
+      "region": "MEA",
+      "month": "2025-03",
+      "property_count": 77,
+      "adr": 72.16,
+      "revpar": 39.94,
+      "occupancy": 55.3
+    },
+    {
+      "region": "North America",
+      "month": "2025-03",
+      "property_count": 351,
+      "adr": 150.85,
+      "revpar": 57.0,
+      "occupancy": 37.8
+    },
+    {
+      "region": "South America",
+      "month": "2025-03",
+      "property_count": 82,
+      "adr": 160.95,
+      "revpar": 85.17,
+      "occupancy": 52.9
+    },
+    {
+      "region": "APAC",
+      "month": "2025-04",
+      "property_count": 216,
+      "adr": 61.69,
+      "revpar": 40.95,
+      "occupancy": 66.4
+    },
+    {
+      "region": "Europe",
+      "month": "2025-04",
+      "property_count": 3446,
+      "adr": 110.53,
+      "revpar": 69.64,
+      "occupancy": 63.0
+    },
+    {
+      "region": "MEA",
+      "month": "2025-04",
+      "property_count": 77,
+      "adr": 76.09,
+      "revpar": 44.57,
+      "occupancy": 58.6
+    },
+    {
+      "region": "North America",
+      "month": "2025-04",
+      "property_count": 351,
+      "adr": 148.98,
+      "revpar": 56.11,
+      "occupancy": 37.7
+    },
+    {
+      "region": "South America",
+      "month": "2025-04",
+      "property_count": 82,
+      "adr": 148.64,
+      "revpar": 73.73,
+      "occupancy": 49.6
+    },
+    {
+      "region": "APAC",
+      "month": "2025-05",
+      "property_count": 216,
+      "adr": 57.45,
+      "revpar": 34.6,
+      "occupancy": 60.2
+    },
+    {
+      "region": "Europe",
+      "month": "2025-05",
+      "property_count": 3446,
+      "adr": 121.77,
+      "revpar": 82.68,
+      "occupancy": 67.9
+    },
+    {
+      "region": "MEA",
+      "month": "2025-05",
+      "property_count": 77,
+      "adr": 68.33,
+      "revpar": 38.59,
+      "occupancy": 56.5
+    },
+    {
+      "region": "North America",
+      "month": "2025-05",
+      "property_count": 351,
+      "adr": 153.81,
+      "revpar": 60.48,
+      "occupancy": 39.3
+    },
+    {
+      "region": "South America",
+      "month": "2025-05",
+      "property_count": 82,
+      "adr": 115.92,
+      "revpar": 51.39,
+      "occupancy": 44.3
+    },
+    {
+      "region": "APAC",
+      "month": "2025-06",
+      "property_count": 216,
+      "adr": 52.09,
+      "revpar": 29.66,
+      "occupancy": 56.9
+    },
+    {
+      "region": "Europe",
+      "month": "2025-06",
+      "property_count": 3446,
+      "adr": 130.78,
+      "revpar": 92.21,
+      "occupancy": 70.5
+    },
+    {
+      "region": "MEA",
+      "month": "2025-06",
+      "property_count": 77,
+      "adr": 62.21,
+      "revpar": 32.46,
+      "occupancy": 52.2
+    },
+    {
+      "region": "North America",
+      "month": "2025-06",
+      "property_count": 351,
+      "adr": 157.55,
+      "revpar": 67.54,
+      "occupancy": 42.9
+    },
+    {
+      "region": "South America",
+      "month": "2025-06",
+      "property_count": 82,
+      "adr": 107.73,
+      "revpar": 47.43,
+      "occupancy": 44.0
+    },
+    {
+      "region": "APAC",
+      "month": "2025-07",
+      "property_count": 216,
+      "adr": 58.89,
+      "revpar": 34.96,
+      "occupancy": 59.4
+    },
+    {
+      "region": "Europe",
+      "month": "2025-07",
+      "property_count": 3446,
+      "adr": 125.85,
+      "revpar": 89.09,
+      "occupancy": 70.8
+    },
+    {
+      "region": "MEA",
+      "month": "2025-07",
+      "property_count": 77,
+      "adr": 63.04,
+      "revpar": 34.65,
+      "occupancy": 55.0
+    },
+    {
+      "region": "North America",
+      "month": "2025-07",
+      "property_count": 351,
+      "adr": 161.15,
+      "revpar": 71.59,
+      "occupancy": 44.4
+    },
+    {
+      "region": "South America",
+      "month": "2025-07",
+      "property_count": 82,
+      "adr": 105.44,
+      "revpar": 50.7,
+      "occupancy": 48.1
+    },
+    {
+      "region": "APAC",
+      "month": "2025-08",
+      "property_count": 216,
+      "adr": 62.5,
+      "revpar": 36.02,
+      "occupancy": 57.6
+    },
+    {
+      "region": "Europe",
+      "month": "2025-08",
+      "property_count": 3446,
+      "adr": 124.23,
+      "revpar": 89.99,
+      "occupancy": 72.4
+    },
+    {
+      "region": "MEA",
+      "month": "2025-08",
+      "property_count": 77,
+      "adr": 65.34,
+      "revpar": 40.2,
+      "occupancy": 61.5
+    },
+    {
+      "region": "North America",
+      "month": "2025-08",
+      "property_count": 351,
+      "adr": 159.19,
+      "revpar": 73.44,
+      "occupancy": 46.1
+    },
+    {
+      "region": "South America",
+      "month": "2025-08",
+      "property_count": 82,
+      "adr": 116.36,
+      "revpar": 54.44,
+      "occupancy": 46.8
+    },
+    {
+      "region": "APAC",
+      "month": "2025-09",
+      "property_count": 216,
+      "adr": 57.18,
+      "revpar": 34.24,
+      "occupancy": 59.9
+    },
+    {
+      "region": "Europe",
+      "month": "2025-09",
+      "property_count": 3445,
+      "adr": 122.2,
+      "revpar": 87.59,
+      "occupancy": 71.7
+    },
+    {
+      "region": "MEA",
+      "month": "2025-09",
+      "property_count": 77,
+      "adr": 67.57,
+      "revpar": 40.25,
+      "occupancy": 59.6
+    },
+    {
+      "region": "North America",
+      "month": "2025-09",
+      "property_count": 351,
+      "adr": 158.13,
+      "revpar": 66.88,
+      "occupancy": 42.3
+    },
+    {
+      "region": "South America",
+      "month": "2025-09",
+      "property_count": 82,
+      "adr": 104.02,
+      "revpar": 42.95,
+      "occupancy": 41.3
+    },
+    {
+      "region": "APAC",
+      "month": "2025-10",
+      "property_count": 216,
+      "adr": 60.99,
+      "revpar": 40.27,
+      "occupancy": 66.0
+    },
+    {
+      "region": "Europe",
+      "month": "2025-10",
+      "property_count": 3445,
+      "adr": 112.44,
+      "revpar": 77.17,
+      "occupancy": 68.6
+    },
+    {
+      "region": "MEA",
+      "month": "2025-10",
+      "property_count": 77,
+      "adr": 81.37,
+      "revpar": 51.0,
+      "occupancy": 62.7
+    },
+    {
+      "region": "North America",
+      "month": "2025-10",
+      "property_count": 351,
+      "adr": 157.96,
+      "revpar": 66.43,
+      "occupancy": 42.1
+    },
+    {
+      "region": "South America",
+      "month": "2025-10",
+      "property_count": 82,
+      "adr": 108.19,
+      "revpar": 47.4,
+      "occupancy": 43.8
+    },
+    {
+      "region": "APAC",
+      "month": "2025-11",
+      "property_count": 216,
+      "adr": 60.01,
+      "revpar": 43.73,
+      "occupancy": 72.9
+    },
+    {
+      "region": "Europe",
+      "month": "2025-11",
+      "property_count": 3443,
+      "adr": 102.15,
+      "revpar": 65.9,
+      "occupancy": 64.5
+    },
+    {
+      "region": "MEA",
+      "month": "2025-11",
+      "property_count": 77,
+      "adr": 84.11,
+      "revpar": 51.2,
+      "occupancy": 60.9
+    },
+    {
+      "region": "North America",
+      "month": "2025-11",
+      "property_count": 351,
+      "adr": 134.88,
+      "revpar": 48.32,
+      "occupancy": 35.8
+    },
+    {
+      "region": "South America",
+      "month": "2025-11",
+      "property_count": 82,
+      "adr": 119.29,
+      "revpar": 59.33,
+      "occupancy": 49.7
+    },
+    {
+      "region": "APAC",
+      "month": "2025-12",
+      "property_count": 216,
+      "adr": 67.48,
+      "revpar": 45.27,
+      "occupancy": 67.1
+    },
+    {
+      "region": "Europe",
+      "month": "2025-12",
+      "property_count": 3443,
+      "adr": 118.21,
+      "revpar": 70.97,
+      "occupancy": 60.0
+    },
+    {
+      "region": "MEA",
+      "month": "2025-12",
+      "property_count": 77,
+      "adr": 87.37,
+      "revpar": 49.7,
+      "occupancy": 56.9
+    },
+    {
+      "region": "North America",
+      "month": "2025-12",
+      "property_count": 351,
+      "adr": 154.12,
+      "revpar": 52.13,
+      "occupancy": 33.8
+    },
+    {
+      "region": "South America",
+      "month": "2025-12",
+      "property_count": 82,
+      "adr": 166.01,
+      "revpar": 82.76,
+      "occupancy": 49.9
+    },
+    {
+      "region": "APAC",
+      "month": "2026-01",
+      "property_count": 216,
+      "adr": 66.27,
+      "revpar": 46.63,
+      "occupancy": 70.4
+    },
+    {
+      "region": "Europe",
+      "month": "2026-01",
+      "property_count": 3442,
+      "adr": 105.89,
+      "revpar": 58.77,
+      "occupancy": 55.5
+    },
+    {
+      "region": "MEA",
+      "month": "2026-01",
+      "property_count": 77,
+      "adr": 90.12,
+      "revpar": 44.76,
+      "occupancy": 49.7
+    },
+    {
+      "region": "North America",
+      "month": "2026-01",
+      "property_count": 351,
+      "adr": 129.85,
+      "revpar": 42.15,
+      "occupancy": 32.5
+    },
+    {
+      "region": "South America",
+      "month": "2026-01",
+      "property_count": 82,
+      "adr": 158.27,
+      "revpar": 86.82,
+      "occupancy": 54.9
+    },
+    {
+      "region": "APAC",
+      "month": "2026-02",
+      "property_count": 216,
+      "adr": 65.8,
+      "revpar": 47.38,
+      "occupancy": 72.0
+    },
+    {
+      "region": "Europe",
+      "month": "2026-02",
+      "property_count": 3442,
+      "adr": 110.76,
+      "revpar": 66.85,
+      "occupancy": 60.4
+    },
+    {
+      "region": "MEA",
+      "month": "2026-02",
+      "property_count": 77,
+      "adr": 85.42,
+      "revpar": 44.68,
+      "occupancy": 52.3
+    },
+    {
+      "region": "North America",
+      "month": "2026-02",
+      "property_count": 351,
+      "adr": 139.3,
+      "revpar": 52.03,
+      "occupancy": 37.3
+    },
+    {
+      "region": "South America",
+      "month": "2026-02",
+      "property_count": 82,
+      "adr": 159.26,
+      "revpar": 91.01,
+      "occupancy": 57.1
+    },
+    {
+      "region": "APAC",
+      "month": "2026-03",
+      "property_count": 216,
+      "adr": 61.08,
+      "revpar": 41.06,
+      "occupancy": 67.2
+    },
+    {
+      "region": "Europe",
+      "month": "2026-03",
+      "property_count": 3442,
+      "adr": 107.86,
+      "revpar": 66.69,
+      "occupancy": 61.8
+    },
+    {
+      "region": "MEA",
+      "month": "2026-03",
+      "property_count": 77,
+      "adr": 79.42,
+      "revpar": 43.96,
+      "occupancy": 55.4
+    },
+    {
+      "region": "North America",
+      "month": "2026-03",
+      "property_count": 351,
+      "adr": 141.34,
+      "revpar": 54.74,
+      "occupancy": 38.7
+    },
+    {
+      "region": "South America",
+      "month": "2026-03",
+      "property_count": 82,
+      "adr": 157.96,
+      "revpar": 80.52,
+      "occupancy": 51.0
+    },
+    {
+      "region": "APAC",
+      "month": "2026-04",
+      "property_count": 216,
+      "adr": 57.01,
+      "revpar": 36.92,
+      "occupancy": 64.8
+    },
+    {
+      "region": "Europe",
+      "month": "2026-04",
+      "property_count": 3440,
+      "adr": 110.96,
+      "revpar": 71.76,
+      "occupancy": 64.7
+    },
+    {
+      "region": "MEA",
+      "month": "2026-04",
+      "property_count": 77,
+      "adr": 85.08,
+      "revpar": 46.37,
+      "occupancy": 54.5
+    },
+    {
+      "region": "North America",
+      "month": "2026-04",
+      "property_count": 350,
+      "adr": 141.36,
+      "revpar": 53.06,
+      "occupancy": 37.5
+    },
+    {
+      "region": "South America",
+      "month": "2026-04",
+      "property_count": 82,
+      "adr": 152.46,
+      "revpar": 70.01,
+      "occupancy": 45.9
+    }
+  ]
+}
