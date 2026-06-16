@@ -1,0 +1,39 @@
+name: Refresh dashboard data
+
+on:
+  schedule:
+    - cron: '0 6 1 * *'   # 1st of each month at 06:00 UTC
+  workflow_dispatch:       # manual trigger from GitHub Actions UI
+
+jobs:
+  refresh:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Python 3.11
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install dependencies
+        run: pip install 'databricks-sql-connector>=2.0.0' pandas python-dotenv
+
+      - name: Extract data from Databricks
+        env:
+          DATABRICKS_HOST:      ${{ secrets.DATABRICKS_HOST }}
+          DATABRICKS_HTTP_PATH: ${{ secrets.DATABRICKS_HTTP_PATH }}
+          DATABRICKS_TOKEN:     ${{ secrets.DATABRICKS_TOKEN }}
+        run: python scripts/refresh_data.py
+
+      - name: Commit and push data files
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add public/data/
+          git diff --staged --quiet || git commit -m "chore: refresh dashboard data $(date +%Y-%m-%d)"
+          git push
