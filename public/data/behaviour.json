@@ -91,7 +91,7 @@
       },
       {
         "day": "Friday",
-        "2024": 17.2,
+        "2024": 17.1,
         "2025": 17.2
       },
       {
@@ -311,7 +311,7 @@
         },
         {
           "year": 2025,
-          "cancel_rate": 28.2,
+          "cancel_rate": 28.3,
           "avg_cancel_window": 39.9
         }
       ],
@@ -599,7 +599,7 @@
         },
         {
           "year": 2025,
-          "cancel_rate": 23.1,
+          "cancel_rate": 23.2,
           "avg_cancel_window": 55.9
         }
       ],
