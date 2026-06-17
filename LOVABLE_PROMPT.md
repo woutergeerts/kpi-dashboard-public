@@ -12,7 +12,7 @@ Build a public-facing hotel industry benchmark dashboard for Mews. The app reads
 |---|---|
 | `/public/data/meta.json` | `pub_start`, `pub_end`, `generated_at`, `fx_rates.USD` |
 | `/public/data/kpis.json` | ADR / Occupancy / RevPAR for `global`, `regions{}`, `countries{}` — each with `ytd` sub-object |
-| `/public/data/trends.json` | Daily time series for `global` (array) and `regions{}` (arrays) — each item: `{date, year, adr, revpar, occupancy}` |
+| `/public/data/trends.json` | `global` (array), `regions{}` (arrays) — items: `{date, year, adr, revpar, occupancy}` in EUR; `countries{}` — each: `{region, currency, currency_symbol, data[]}` where `data` uses the same item shape in local currency |
 | `/public/data/regional.json` | `annual[]` and `monthly[]` for all 5 regions: `{region, year/month, adr, revpar, occupancy, property_count}` |
 | `/public/data/behaviour.json` | `global{annual[], cancellations[], lead_time[], checkin_dow[], checkout_dow[]}` and `regions{"North America": {...}, "Europe": {...}, ...}` — same shape per region |
 | `/public/analyst_insight.md` | Markdown text for Tab 1. Fetch and render as formatted text. |
@@ -78,7 +78,10 @@ Source: `kpis[selectedEntity]` where `selectedEntity` is `global`, `regions[name
 
 Source: `kpis[selectedEntity].ytd`. Show a small `as_of` caption ("as of Jun 15").
 
-**Historical Performance** — two line charts side by side (ADR left, Occupancy right), with RevPAR below full width. Each chart overlays 2025 (grey line) and 2026 (coloured line). X-axis: Jan–Dec with month labels. Use 7-day rolling average data from `trends[selectedRegionOrGlobal]`. When a country is selected, use the parent region's trend data.
+**Historical Performance** — two line charts side by side (ADR left, Occupancy right), with RevPAR below full width. Each chart overlays 2025 (grey line) and 2026 (coloured line). X-axis: Jan–Dec with month labels. Resolve trend data as follows:
+- Global selected → `trends.global` (EUR)
+- Region selected → `trends.regions[name]` (EUR)
+- Country selected → `trends.countries[name].data` in local currency (`trends.countries[name].currency_symbol`); if the country is not present in `trends.countries`, fall back to the parent region's data in EUR
 
 ### Tab 3 — 🗺️ Regional Overview
 

@@ -296,12 +296,14 @@ def fetch_ytd(conn) -> dict:
 
     return out
 
-# ── Historical trends (global + per region, 7-day rolling) ───────────────────
+# ── Historical trends (global + per region + per country, 7-day rolling) ─────
 
 def fetch_trends(conn) -> dict:
     print("  Fetching historical trends...")
     pf = _prop_base(str(PUB_START))
-    df = query(f"""
+
+    # ── Regional trends query (EUR) ───────────────────────────────────────────
+    df_reg = query(f"""
         SELECT dt, region,
                COUNT(DISTINCT pms_property_id) AS property_count,
                SUM(rev_eur) AS rev_eur,
@@ -328,35 +330,77 @@ def fetch_trends(conn) -> dict:
         ORDER BY dt
     """, conn)
 
-    if df.empty:
-        return {"global": [], "regions": {r: [] for r in REGION_ORDER}}
+    # ── Country trends query (local currency) ─────────────────────────────────
+    # country_name is a real column so no subquery needed — avoids MISSING_AGGREGATION.
+    df_cty = query(f"""
+        SELECT m.calendar_date_local                                              AS dt,
+               p.country_name,
+               COUNT(DISTINCT m.pms_property_id)                                  AS property_count,
+               SUM(CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.total_adjusted_net_accommodation_revenue END)      AS rev_local,
+               SUM(CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_directly_occupied_accommodation_resources END) AS occ,
+               SUM(CASE WHEN m.num_directly_occupied_accommodation_resources > 0
+                        THEN m.num_available_accommodation_resources END)         AS avail
+        FROM product.marts.mrt_daily_resource_and_revenue_metrics_per_property m
+        JOIN product.dimensions.dim_pms_properties p ON m.pms_property_id = p.pms_property_id
+        WHERE {pf}
+          AND m.calendar_date_local >= '{PUB_START}'
+          AND m.calendar_date_local <  '{PUB_END}'
+        GROUP BY m.calendar_date_local, p.country_name
+        ORDER BY dt
+    """, conn)
 
-    for c in ["rev_eur", "occ", "avail", "property_count"]:
-        df[c] = _num(df, c)
-    df["dt"] = pd.to_datetime(df["dt"])
-    df = df[df["property_count"] >= MIN_PROPERTIES]
-
-    def _rolling(sub: pd.DataFrame):
+    # ── 7-day rolling average helper ──────────────────────────────────────────
+    def _rolling(sub: pd.DataFrame, rev_col: str = "rev_eur"):
         sub = sub.copy().sort_values("dt")
         sub["year"] = sub["dt"].dt.year.astype(str)
-        for col in ["rev_eur", "occ", "avail"]:
+        for col in [rev_col, "occ", "avail"]:
             sub[col] = sub.groupby("year")[col].transform(
                 lambda x: x.rolling(7, min_periods=1).mean()
             )
         rows = []
         for _, r in sub.iterrows():
-            m = _metrics(r["rev_eur"], r["occ"], r["avail"])
+            m = _metrics(r[rev_col], r["occ"], r["avail"])
             rows.append({"date": r["dt"].strftime("%Y-%m-%d"), "year": r["year"], **m})
         return rows
 
-    out = {"global": [], "regions": {}}
+    out = {"global": [], "regions": {}, "countries": {}}
 
-    global_df = df.groupby("dt")[["rev_eur", "occ", "avail"]].sum().reset_index()
-    out["global"] = _rolling(global_df)
+    # ── Global + regional ─────────────────────────────────────────────────────
+    if not df_reg.empty:
+        for c in ["rev_eur", "occ", "avail", "property_count"]:
+            df_reg[c] = _num(df_reg, c)
+        df_reg["dt"] = pd.to_datetime(df_reg["dt"])
+        df_reg = df_reg[df_reg["property_count"] >= MIN_PROPERTIES]
 
-    for region in REGION_ORDER:
-        rdf = df[df["region"] == region].groupby("dt")[["rev_eur", "occ", "avail"]].sum().reset_index()
-        out["regions"][region] = _rolling(rdf)
+        global_df = df_reg.groupby("dt")[["rev_eur", "occ", "avail"]].sum().reset_index()
+        out["global"] = _rolling(global_df)
+
+        for region in REGION_ORDER:
+            rdf = df_reg[df_reg["region"] == region].groupby("dt")[["rev_eur", "occ", "avail"]].sum().reset_index()
+            out["regions"][region] = _rolling(rdf)
+
+    # ── Country ───────────────────────────────────────────────────────────────
+    if not df_cty.empty:
+        for c in ["rev_local", "occ", "avail", "property_count"]:
+            df_cty[c] = _num(df_cty, c)
+        df_cty["dt"] = pd.to_datetime(df_cty["dt"])
+        # Restrict to known mapped countries; drop rows with < MIN_PROPERTIES
+        df_cty = df_cty[df_cty["country_name"].isin(COUNTRY_TO_REGION)]
+        df_cty = df_cty[df_cty["property_count"] >= MIN_PROPERTIES]
+
+        for country, cdf in df_cty.groupby("country_name"):
+            if cdf.empty:
+                continue
+            cur_code, cur_sym = COUNTRY_CURRENCY.get(country, ("EUR", "€"))
+            sub = cdf[["dt", "rev_local", "occ", "avail"]].copy()
+            out["countries"][country] = {
+                "region":          COUNTRY_TO_REGION[country],
+                "currency":        cur_code,
+                "currency_symbol": cur_sym,
+                "data":            _rolling(sub, "rev_local"),
+            }
 
     return out
 
