@@ -8,16 +8,16 @@
     "currency": "EUR",
     "currency_symbol": "\u20ac",
     "ytd": {
-      "adr_2025": 110.95,
+      "adr_2025": 111.07,
       "adr_2026": 111.04,
-      "adr_chg": 0.1,
-      "occ_2025": 63.0,
+      "adr_chg": -0.0,
+      "occ_2025": 63.1,
       "occ_2026": 63.5,
-      "occ_chg": 0.8,
-      "rev_2025": 69.91,
+      "occ_chg": 0.6,
+      "rev_2025": 70.04,
       "rev_2026": 70.48,
-      "rev_chg": 0.8,
-      "as_of": "Jun 17"
+      "rev_chg": 0.6,
+      "as_of": "Jun 18"
     }
   },
   "regions": {
@@ -29,16 +29,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 157.24,
+        "adr_2025": 157.19,
         "adr_2026": 155.58,
-        "adr_chg": -1.1,
+        "adr_chg": -1.0,
         "occ_2025": 55.4,
         "occ_2026": 54.4,
         "occ_chg": -1.8,
-        "rev_2025": 87.09,
+        "rev_2025": 87.13,
         "rev_2026": 84.71,
-        "rev_chg": -2.7,
-        "as_of": "Jun 17"
+        "rev_chg": -2.8,
+        "as_of": "Jun 18"
       }
     },
     "South America": {
@@ -49,16 +49,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 142.66,
+        "adr_2025": 142.4,
         "adr_2026": 146.58,
-        "adr_chg": 2.7,
-        "occ_2025": 49.8,
+        "adr_chg": 2.9,
+        "occ_2025": 49.7,
         "occ_2026": 47.9,
-        "occ_chg": -3.8,
-        "rev_2025": 71.01,
+        "occ_chg": -3.6,
+        "rev_2025": 70.84,
         "rev_2026": 70.21,
-        "rev_chg": -1.1,
-        "as_of": "Jun 17"
+        "rev_chg": -0.9,
+        "as_of": "Jun 18"
       }
     },
     "Europe": {
@@ -69,16 +69,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 114.18,
+        "adr_2025": 114.33,
         "adr_2026": 114.55,
-        "adr_chg": 0.3,
-        "occ_2025": 63.6,
+        "adr_chg": 0.2,
+        "occ_2025": 63.7,
         "occ_2026": 64.5,
-        "occ_chg": 1.4,
-        "rev_2025": 72.66,
+        "occ_chg": 1.3,
+        "rev_2025": 72.84,
         "rev_2026": 73.85,
-        "rev_chg": 1.6,
-        "as_of": "Jun 17"
+        "rev_chg": 1.4,
+        "as_of": "Jun 18"
       }
     },
     "APAC": {
@@ -89,16 +89,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 62.8,
+        "adr_2025": 62.73,
         "adr_2026": 60.65,
-        "adr_chg": -3.4,
+        "adr_chg": -3.3,
         "occ_2025": 65.8,
         "occ_2026": 64.3,
         "occ_chg": -2.3,
-        "rev_2025": 41.34,
+        "rev_2025": 41.26,
         "rev_2026": 39.01,
-        "rev_chg": -5.6,
-        "as_of": "Jun 17"
+        "rev_chg": -5.5,
+        "as_of": "Jun 18"
       }
     },
     "MEA": {
@@ -109,16 +109,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 73.47,
+        "adr_2025": 73.39,
         "adr_2026": 80.34,
-        "adr_chg": 9.4,
+        "adr_chg": 9.5,
         "occ_2025": 53.7,
         "occ_2026": 52.9,
         "occ_chg": -1.5,
-        "rev_2025": 39.47,
+        "rev_2025": 39.4,
         "rev_2026": 42.51,
-        "rev_chg": 7.7,
-        "as_of": "Jun 17"
+        "rev_chg": 7.9,
+        "as_of": "Jun 18"
       }
     }
   },
@@ -134,16 +134,16 @@
       "currency": "AUD",
       "currency_symbol": "A$",
       "ytd": {
-        "adr_2025": 61.33,
+        "adr_2025": 61.29,
         "adr_2026": 62.31,
-        "adr_chg": 1.6,
-        "occ_2025": 65.6,
+        "adr_chg": 1.7,
+        "occ_2025": 65.5,
         "occ_2026": 64.9,
-        "occ_chg": -1.1,
-        "rev_2025": 40.2,
+        "occ_chg": -0.9,
+        "rev_2025": 40.13,
         "rev_2026": 40.46,
-        "rev_chg": 0.6,
-        "as_of": "Jun 17"
+        "rev_chg": 0.8,
+        "as_of": "Jun 18"
       }
     },
     "Austria": {
@@ -157,16 +157,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 111.09,
+        "adr_2025": 111.01,
         "adr_2026": 101.64,
-        "adr_chg": -8.5,
+        "adr_chg": -8.4,
         "occ_2025": 60.8,
         "occ_2026": 64.1,
         "occ_chg": 5.4,
-        "rev_2025": 67.51,
+        "rev_2025": 67.48,
         "rev_2026": 65.2,
         "rev_chg": -3.4,
-        "as_of": "Jun 17"
+        "as_of": "Jun 18"
       }
     },
     "Belgium": {
@@ -180,16 +180,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 116.38,
+        "adr_2025": 116.4,
         "adr_2026": 117.05,
         "adr_chg": 0.6,
-        "occ_2025": 62.8,
+        "occ_2025": 62.9,
         "occ_2026": 61.5,
-        "occ_chg": -2.1,
-        "rev_2025": 73.03,
+        "occ_chg": -2.2,
+        "rev_2025": 73.17,
         "rev_2026": 72.03,
-        "rev_chg": -1.4,
-        "as_of": "Jun 17"
+        "rev_chg": -1.6,
+        "as_of": "Jun 18"
       }
     },
     "Bonaire, Sint Eustatius and Saba": {
@@ -203,16 +203,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 167.58,
+        "adr_2025": 167.39,
         "adr_2026": 160.13,
-        "adr_chg": -4.4,
-        "occ_2025": 82.4,
+        "adr_chg": -4.3,
+        "occ_2025": 82.3,
         "occ_2026": 82.2,
-        "occ_chg": -0.2,
-        "rev_2025": 138.01,
+        "occ_chg": -0.1,
+        "rev_2025": 137.77,
         "rev_2026": 131.69,
-        "rev_chg": -4.6,
-        "as_of": "Jun 17"
+        "rev_chg": -4.4,
+        "as_of": "Jun 18"
       }
     },
     "Brazil": {
@@ -229,13 +229,13 @@
         "adr_2025": 3.98,
         "adr_2026": 4.07,
         "adr_chg": 2.3,
-        "occ_2025": 19.0,
+        "occ_2025": 19.1,
         "occ_2026": 23.0,
-        "occ_chg": 21.1,
+        "occ_chg": 20.4,
         "rev_2025": 0.76,
         "rev_2026": 0.94,
         "rev_chg": 23.7,
-        "as_of": "Jun 17"
+        "as_of": "Jun 18"
       }
     },
     "Canada": {
@@ -249,16 +249,16 @@
       "currency": "CAD",
       "currency_symbol": "CA$",
       "ytd": {
-        "adr_2025": 70.03,
+        "adr_2025": 70.18,
         "adr_2026": 73.02,
-        "adr_chg": 4.3,
-        "occ_2025": 64.8,
+        "adr_chg": 4.0,
+        "occ_2025": 64.9,
         "occ_2026": 61.5,
-        "occ_chg": -5.1,
-        "rev_2025": 45.39,
+        "occ_chg": -5.2,
+        "rev_2025": 45.56,
         "rev_2026": 44.91,
-        "rev_chg": -1.1,
-        "as_of": "Jun 17"
+        "rev_chg": -1.4,
+        "as_of": "Jun 18"
       }
     },
     "Costa Rica": {
@@ -284,16 +284,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 275.2,
+        "adr_2025": 274.88,
         "adr_2026": 269.44,
-        "adr_chg": -2.1,
-        "occ_2025": 75.2,
+        "adr_chg": -2.0,
+        "occ_2025": 75.1,
         "occ_2026": 76.9,
-        "occ_chg": 2.3,
-        "rev_2025": 207.03,
+        "occ_chg": 2.4,
+        "rev_2025": 206.53,
         "rev_2026": 207.22,
-        "rev_chg": 0.1,
-        "as_of": "Jun 17"
+        "rev_chg": 0.3,
+        "as_of": "Jun 18"
       }
     },
     "Denmark": {
@@ -307,16 +307,16 @@
       "currency": "DKK",
       "currency_symbol": "kr ",
       "ytd": {
-        "adr_2025": 97.12,
+        "adr_2025": 97.72,
         "adr_2026": 99.71,
-        "adr_chg": 2.7,
-        "occ_2025": 68.8,
+        "adr_chg": 2.0,
+        "occ_2025": 68.9,
         "occ_2026": 71.0,
-        "occ_chg": 3.2,
-        "rev_2025": 66.78,
+        "occ_chg": 3.0,
+        "rev_2025": 67.33,
         "rev_2026": 70.76,
-        "rev_chg": 6.0,
-        "as_of": "Jun 17"
+        "rev_chg": 5.1,
+        "as_of": "Jun 18"
       }
     },
     "Estonia": {
@@ -330,16 +330,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 41.89,
+        "adr_2025": 41.97,
         "adr_2026": 45.52,
-        "adr_chg": 8.7,
+        "adr_chg": 8.5,
         "occ_2025": 70.4,
         "occ_2026": 77.7,
         "occ_chg": 10.4,
-        "rev_2025": 29.49,
+        "rev_2025": 29.57,
         "rev_2026": 35.38,
-        "rev_chg": 20.0,
-        "as_of": "Jun 17"
+        "rev_chg": 19.6,
+        "as_of": "Jun 18"
       }
     },
     "Finland": {
@@ -353,16 +353,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 124.14,
+        "adr_2025": 124.11,
         "adr_2026": 125.23,
         "adr_chg": 0.9,
-        "occ_2025": 61.1,
+        "occ_2025": 61.0,
         "occ_2026": 57.0,
-        "occ_chg": -6.7,
-        "rev_2025": 75.9,
+        "occ_chg": -6.6,
+        "rev_2025": 75.76,
         "rev_2026": 71.41,
-        "rev_chg": -5.9,
-        "as_of": "Jun 17"
+        "rev_chg": -5.7,
+        "as_of": "Jun 18"
       }
     },
     "France": {
@@ -376,16 +376,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 149.38,
+        "adr_2025": 149.75,
         "adr_2026": 153.89,
-        "adr_chg": 3.0,
+        "adr_chg": 2.8,
         "occ_2025": 67.4,
         "occ_2026": 68.5,
         "occ_chg": 1.6,
-        "rev_2025": 100.61,
+        "rev_2025": 101.0,
         "rev_2026": 105.37,
-        "rev_chg": 4.7,
-        "as_of": "Jun 17"
+        "rev_chg": 4.3,
+        "as_of": "Jun 18"
       }
     },
     "Georgia": {
@@ -399,16 +399,16 @@
       "currency": "GEL",
       "currency_symbol": "\u20be",
       "ytd": {
-        "adr_2025": 36.21,
+        "adr_2025": 36.24,
         "adr_2026": 37.43,
-        "adr_chg": 3.4,
-        "occ_2025": 56.6,
+        "adr_chg": 3.3,
+        "occ_2025": 56.7,
         "occ_2026": 50.8,
-        "occ_chg": -10.2,
-        "rev_2025": 20.51,
+        "occ_chg": -10.4,
+        "rev_2025": 20.54,
         "rev_2026": 18.99,
-        "rev_chg": -7.4,
-        "as_of": "Jun 17"
+        "rev_chg": -7.5,
+        "as_of": "Jun 18"
       }
     },
     "Germany": {
@@ -422,16 +422,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 85.54,
+        "adr_2025": 85.57,
         "adr_2026": 83.54,
-        "adr_chg": -2.3,
+        "adr_chg": -2.4,
         "occ_2025": 58.5,
         "occ_2026": 57.7,
         "occ_chg": -1.4,
-        "rev_2025": 50.01,
+        "rev_2025": 50.06,
         "rev_2026": 48.19,
-        "rev_chg": -3.6,
-        "as_of": "Jun 17"
+        "rev_chg": -3.7,
+        "as_of": "Jun 18"
       }
     },
     "Greece": {
@@ -445,16 +445,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 122.03,
+        "adr_2025": 122.64,
         "adr_2026": 130.26,
-        "adr_chg": 6.7,
+        "adr_chg": 6.2,
         "occ_2025": 62.2,
         "occ_2026": 73.4,
         "occ_chg": 18.0,
-        "rev_2025": 75.87,
+        "rev_2025": 76.33,
         "rev_2026": 95.62,
-        "rev_chg": 26.0,
-        "as_of": "Jun 17"
+        "rev_chg": 25.3,
+        "as_of": "Jun 18"
       }
     },
     "Guatemala": {
@@ -468,16 +468,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 128.29,
+        "adr_2025": 128.0,
         "adr_2026": 128.5,
-        "adr_chg": 0.2,
+        "adr_chg": 0.4,
         "occ_2025": 46.7,
         "occ_2026": 34.3,
         "occ_chg": -26.6,
-        "rev_2025": 59.95,
+        "rev_2025": 59.8,
         "rev_2026": 44.04,
-        "rev_chg": -26.5,
-        "as_of": "Jun 17"
+        "rev_chg": -26.4,
+        "as_of": "Jun 18"
       }
     },
     "Hungary": {
@@ -491,16 +491,16 @@
       "currency": "HUF",
       "currency_symbol": "Ft ",
       "ytd": {
-        "adr_2025": 54.43,
+        "adr_2025": 54.38,
         "adr_2026": 56.39,
-        "adr_chg": 3.6,
+        "adr_chg": 3.7,
         "occ_2025": 63.0,
         "occ_2026": 60.5,
         "occ_chg": -4.0,
-        "rev_2025": 34.29,
+        "rev_2025": 34.28,
         "rev_2026": 34.11,
         "rev_chg": -0.5,
-        "as_of": "Jun 17"
+        "as_of": "Jun 18"
       }
     },
     "Indonesia": {
@@ -514,16 +514,16 @@
       "currency": "IDR",
       "currency_symbol": "Rp ",
       "ytd": {
-        "adr_2025": 43.85,
+        "adr_2025": 43.84,
         "adr_2026": 37.63,
         "adr_chg": -14.2,
-        "occ_2025": 67.9,
+        "occ_2025": 68.0,
         "occ_2026": 67.7,
-        "occ_chg": -0.3,
-        "rev_2025": 29.77,
+        "occ_chg": -0.4,
+        "rev_2025": 29.8,
         "rev_2026": 25.49,
-        "rev_chg": -14.4,
-        "as_of": "Jun 17"
+        "rev_chg": -14.5,
+        "as_of": "Jun 18"
       }
     },
     "Ireland": {
@@ -537,16 +537,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 82.01,
+        "adr_2025": 82.05,
         "adr_2026": 88.31,
-        "adr_chg": 7.7,
+        "adr_chg": 7.6,
         "occ_2025": 60.6,
         "occ_2026": 61.2,
         "occ_chg": 1.0,
-        "rev_2025": 49.67,
+        "rev_2025": 49.72,
         "rev_2026": 54.02,
-        "rev_chg": 8.8,
-        "as_of": "Jun 17"
+        "rev_chg": 8.6,
+        "as_of": "Jun 18"
       }
     },
     "Italy": {
@@ -560,16 +560,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 70.63,
+        "adr_2025": 70.8,
         "adr_2026": 78.21,
-        "adr_chg": 10.7,
+        "adr_chg": 10.5,
         "occ_2025": 70.5,
         "occ_2026": 65.3,
         "occ_chg": -7.4,
-        "rev_2025": 49.79,
+        "rev_2025": 49.94,
         "rev_2026": 51.04,
-        "rev_chg": 2.5,
-        "as_of": "Jun 17"
+        "rev_chg": 2.2,
+        "as_of": "Jun 18"
       }
     },
     "Japan": {
@@ -583,16 +583,16 @@
       "currency": "JPY",
       "currency_symbol": "\u00a5",
       "ytd": {
-        "adr_2025": 188.83,
+        "adr_2025": 188.4,
         "adr_2026": 178.98,
-        "adr_chg": -5.2,
+        "adr_chg": -5.0,
         "occ_2025": 81.5,
         "occ_2026": 77.0,
         "occ_chg": -5.5,
-        "rev_2025": 153.95,
+        "rev_2025": 153.54,
         "rev_2026": 137.84,
-        "rev_chg": -10.5,
-        "as_of": "Jun 17"
+        "rev_chg": -10.2,
+        "as_of": "Jun 18"
       }
     },
     "Luxembourg": {
@@ -606,16 +606,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 103.58,
+        "adr_2025": 103.75,
         "adr_2026": 108.11,
-        "adr_chg": 4.4,
-        "occ_2025": 78.5,
+        "adr_chg": 4.2,
+        "occ_2025": 78.6,
         "occ_2026": 75.9,
-        "occ_chg": -3.3,
-        "rev_2025": 81.31,
+        "occ_chg": -3.4,
+        "rev_2025": 81.56,
         "rev_2026": 82.07,
-        "rev_chg": 0.9,
-        "as_of": "Jun 17"
+        "rev_chg": 0.6,
+        "as_of": "Jun 18"
       }
     },
     "Malta": {
@@ -641,16 +641,16 @@
       "currency": "MXN",
       "currency_symbol": "MX$",
       "ytd": {
-        "adr_2025": 57.49,
+        "adr_2025": 57.36,
         "adr_2026": 55.84,
-        "adr_chg": -2.9,
-        "occ_2025": 53.0,
+        "adr_chg": -2.6,
+        "occ_2025": 52.9,
         "occ_2026": 48.0,
-        "occ_chg": -9.4,
-        "rev_2025": 30.47,
+        "occ_chg": -9.3,
+        "rev_2025": 30.36,
         "rev_2026": 26.78,
-        "rev_chg": -12.1,
-        "as_of": "Jun 17"
+        "rev_chg": -11.8,
+        "as_of": "Jun 18"
       }
     },
     "Morocco": {
@@ -664,16 +664,16 @@
       "currency": "MAD",
       "currency_symbol": "MAD ",
       "ytd": {
-        "adr_2025": 155.87,
+        "adr_2025": 155.83,
         "adr_2026": 161.05,
         "adr_chg": 3.3,
-        "occ_2025": 63.6,
+        "occ_2025": 63.5,
         "occ_2026": 63.8,
-        "occ_chg": 0.3,
-        "rev_2025": 99.19,
+        "occ_chg": 0.5,
+        "rev_2025": 98.99,
         "rev_2026": 102.76,
-        "rev_chg": 3.6,
-        "as_of": "Jun 17"
+        "rev_chg": 3.8,
+        "as_of": "Jun 18"
       }
     },
     "Netherlands": {
@@ -687,16 +687,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 109.87,
+        "adr_2025": 109.94,
         "adr_2026": 102.65,
         "adr_chg": -6.6,
         "occ_2025": 72.9,
         "occ_2026": 72.5,
         "occ_chg": -0.5,
-        "rev_2025": 80.07,
+        "rev_2025": 80.19,
         "rev_2026": 74.44,
-        "rev_chg": -7.0,
-        "as_of": "Jun 17"
+        "rev_chg": -7.2,
+        "as_of": "Jun 18"
       }
     },
     "New Zealand": {
@@ -710,16 +710,16 @@
       "currency": "NZD",
       "currency_symbol": "NZ$",
       "ytd": {
-        "adr_2025": 49.57,
+        "adr_2025": 49.52,
         "adr_2026": 49.38,
-        "adr_chg": -0.4,
-        "occ_2025": 62.0,
+        "adr_chg": -0.3,
+        "occ_2025": 61.9,
         "occ_2026": 63.2,
-        "occ_chg": 1.9,
-        "rev_2025": 30.72,
+        "occ_chg": 2.1,
+        "rev_2025": 30.64,
         "rev_2026": 31.21,
-        "rev_chg": 1.6,
-        "as_of": "Jun 17"
+        "rev_chg": 1.9,
+        "as_of": "Jun 18"
       }
     },
     "Norway": {
@@ -733,16 +733,16 @@
       "currency": "NOK",
       "currency_symbol": "kr ",
       "ytd": {
-        "adr_2025": 112.58,
+        "adr_2025": 112.9,
         "adr_2026": 120.39,
-        "adr_chg": 6.9,
-        "occ_2025": 56.9,
+        "adr_chg": 6.6,
+        "occ_2025": 57.0,
         "occ_2026": 60.1,
-        "occ_chg": 5.6,
-        "rev_2025": 64.08,
+        "occ_chg": 5.4,
+        "rev_2025": 64.39,
         "rev_2026": 72.32,
-        "rev_chg": 12.9,
-        "as_of": "Jun 17"
+        "rev_chg": 12.3,
+        "as_of": "Jun 18"
       }
     },
     "Panama": {
@@ -756,16 +756,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 84.85,
+        "adr_2025": 84.65,
         "adr_2026": 89.6,
-        "adr_chg": 5.6,
-        "occ_2025": 62.7,
+        "adr_chg": 5.8,
+        "occ_2025": 62.5,
         "occ_2026": 68.0,
-        "occ_chg": 8.5,
-        "rev_2025": 53.18,
+        "occ_chg": 8.8,
+        "rev_2025": 52.94,
         "rev_2026": 60.91,
-        "rev_chg": 14.5,
-        "as_of": "Jun 17"
+        "rev_chg": 15.1,
+        "as_of": "Jun 18"
       }
     },
     "Peru": {
@@ -800,7 +800,7 @@
         "rev_2025": 7.85,
         "rev_2026": 7.51,
         "rev_chg": -4.3,
-        "as_of": "Jun 17"
+        "as_of": "Jun 18"
       }
     },
     "Poland": {
@@ -814,16 +814,16 @@
       "currency": "PLN",
       "currency_symbol": "z\u0142 ",
       "ytd": {
-        "adr_2025": 37.94,
+        "adr_2025": 37.9,
         "adr_2026": 37.58,
-        "adr_chg": -0.9,
+        "adr_chg": -0.8,
         "occ_2025": 51.6,
         "occ_2026": 52.5,
         "occ_chg": 1.7,
-        "rev_2025": 19.58,
+        "rev_2025": 19.57,
         "rev_2026": 19.71,
         "rev_chg": 0.7,
-        "as_of": "Jun 17"
+        "as_of": "Jun 18"
       }
     },
     "Portugal": {
@@ -837,16 +837,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 69.31,
+        "adr_2025": 69.44,
         "adr_2026": 67.31,
-        "adr_chg": -2.9,
-        "occ_2025": 44.6,
+        "adr_chg": -3.1,
+        "occ_2025": 44.7,
         "occ_2026": 45.6,
-        "occ_chg": 2.2,
-        "rev_2025": 30.92,
+        "occ_chg": 2.0,
+        "rev_2025": 31.01,
         "rev_2026": 30.67,
-        "rev_chg": -0.8,
-        "as_of": "Jun 17"
+        "rev_chg": -1.1,
+        "as_of": "Jun 18"
       }
     },
     "R\u00e9union": {
@@ -860,16 +860,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 226.65,
+        "adr_2025": 226.56,
         "adr_2026": 229.85,
-        "adr_chg": 1.4,
-        "occ_2025": 61.2,
+        "adr_chg": 1.5,
+        "occ_2025": 61.1,
         "occ_2026": 60.3,
-        "occ_chg": -1.5,
-        "rev_2025": 138.71,
+        "occ_chg": -1.3,
+        "rev_2025": 138.41,
         "rev_2026": 138.63,
-        "rev_chg": -0.1,
-        "as_of": "Jun 17"
+        "rev_chg": 0.2,
+        "as_of": "Jun 18"
       }
     },
     "Slovakia": {
@@ -883,16 +883,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 47.11,
+        "adr_2025": 47.14,
         "adr_2026": 45.28,
         "adr_chg": -3.9,
-        "occ_2025": 57.0,
+        "occ_2025": 57.1,
         "occ_2026": 66.6,
-        "occ_chg": 16.8,
-        "rev_2025": 26.87,
+        "occ_chg": 16.6,
+        "rev_2025": 26.91,
         "rev_2026": 30.14,
-        "rev_chg": 12.2,
-        "as_of": "Jun 17"
+        "rev_chg": 12.0,
+        "as_of": "Jun 18"
       }
     },
     "South Africa": {
@@ -906,16 +906,16 @@
       "currency": "ZAR",
       "currency_symbol": "R ",
       "ytd": {
-        "adr_2025": 55.18,
+        "adr_2025": 55.13,
         "adr_2026": 62.94,
-        "adr_chg": 14.1,
+        "adr_chg": 14.2,
         "occ_2025": 52.7,
         "occ_2026": 53.1,
         "occ_chg": 0.8,
-        "rev_2025": 29.09,
+        "rev_2025": 29.05,
         "rev_2026": 33.44,
-        "rev_chg": 15.0,
-        "as_of": "Jun 17"
+        "rev_chg": 15.1,
+        "as_of": "Jun 18"
       }
     },
     "Spain": {
@@ -929,16 +929,16 @@
       "currency": "EUR",
       "currency_symbol": "\u20ac",
       "ytd": {
-        "adr_2025": 91.62,
+        "adr_2025": 91.65,
         "adr_2026": 90.05,
         "adr_chg": -1.7,
-        "occ_2025": 56.2,
+        "occ_2025": 56.3,
         "occ_2026": 62.2,
-        "occ_chg": 10.7,
-        "rev_2025": 51.54,
+        "occ_chg": 10.5,
+        "rev_2025": 51.59,
         "rev_2026": 56.03,
-        "rev_chg": 8.7,
-        "as_of": "Jun 17"
+        "rev_chg": 8.6,
+        "as_of": "Jun 18"
       }
     },
     "Sweden": {
@@ -952,16 +952,16 @@
       "currency": "SEK",
       "currency_symbol": "kr ",
       "ytd": {
-        "adr_2025": 91.55,
+        "adr_2025": 91.56,
         "adr_2026": 97.83,
-        "adr_chg": 6.9,
-        "occ_2025": 55.8,
+        "adr_chg": 6.8,
+        "occ_2025": 55.9,
         "occ_2026": 59.8,
-        "occ_chg": 7.2,
-        "rev_2025": 51.13,
+        "occ_chg": 7.0,
+        "rev_2025": 51.18,
         "rev_2026": 58.49,
-        "rev_chg": 14.4,
-        "as_of": "Jun 17"
+        "rev_chg": 14.3,
+        "as_of": "Jun 18"
       }
     },
     "Switzerland": {
@@ -975,16 +975,16 @@
       "currency": "CHF",
       "currency_symbol": "CHF ",
       "ytd": {
-        "adr_2025": 188.52,
+        "adr_2025": 188.61,
         "adr_2026": 192.74,
         "adr_chg": 2.2,
-        "occ_2025": 56.0,
+        "occ_2025": 56.1,
         "occ_2026": 56.6,
-        "occ_chg": 1.1,
-        "rev_2025": 105.62,
+        "occ_chg": 0.9,
+        "rev_2025": 105.83,
         "rev_2026": 109.17,
-        "rev_chg": 3.4,
-        "as_of": "Jun 17"
+        "rev_chg": 3.2,
+        "as_of": "Jun 18"
       }
     },
     "Thailand": {
@@ -998,16 +998,16 @@
       "currency": "THB",
       "currency_symbol": "\u0e3f",
       "ytd": {
-        "adr_2025": 43.02,
+        "adr_2025": 42.9,
         "adr_2026": 39.87,
-        "adr_chg": -7.3,
+        "adr_chg": -7.1,
         "occ_2025": 83.3,
         "occ_2026": 72.4,
         "occ_chg": -13.1,
-        "rev_2025": 35.85,
+        "rev_2025": 35.74,
         "rev_2026": 28.87,
-        "rev_chg": -19.5,
-        "as_of": "Jun 17"
+        "rev_chg": -19.2,
+        "as_of": "Jun 18"
       }
     },
     "United Kingdom": {
@@ -1021,16 +1021,16 @@
       "currency": "GBP",
       "currency_symbol": "\u00a3",
       "ytd": {
-        "adr_2025": 121.11,
+        "adr_2025": 121.36,
         "adr_2026": 120.14,
-        "adr_chg": -0.8,
+        "adr_chg": -1.0,
         "occ_2025": 67.2,
         "occ_2026": 65.8,
         "occ_chg": -2.1,
-        "rev_2025": 81.36,
+        "rev_2025": 81.61,
         "rev_2026": 79.11,
-        "rev_chg": -2.8,
-        "as_of": "Jun 17"
+        "rev_chg": -3.1,
+        "as_of": "Jun 18"
       }
     },
     "United States": {
@@ -1044,16 +1044,16 @@
       "currency": "USD",
       "currency_symbol": "$",
       "ytd": {
-        "adr_2025": 165.67,
+        "adr_2025": 165.61,
         "adr_2026": 163.68,
         "adr_chg": -1.2,
-        "occ_2025": 54.6,
+        "occ_2025": 54.7,
         "occ_2026": 53.8,
-        "occ_chg": -1.5,
-        "rev_2025": 90.49,
+        "occ_chg": -1.6,
+        "rev_2025": 90.52,
         "rev_2026": 88.13,
         "rev_chg": -2.6,
-        "as_of": "Jun 17"
+        "as_of": "Jun 18"
       }
     }
   }
