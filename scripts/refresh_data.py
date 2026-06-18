@@ -499,7 +499,9 @@ def fetch_behaviour(conn) -> dict:
 
     LEAD_TIME_ORDER = ["0 - Same day","1-3 days","4-7 days","8-14 days",
                        "15-30 days","31-60 days","61-90 days","90+ days"]
-    DOW_ORDER = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    DOW_ORDER  = ["Monday","Tuesday","Wednesday","Thursday","Friday","Saturday","Sunday"]
+    LOS_ORDER  = ["1 night","2 nights","3 nights","4-7 nights","8-14 nights","15+ nights"]
+    GS_ORDER   = ["1 guest","2 guests","3 guests","4 guests","5+ guests"]
 
     # All queries use the subquery pattern so GROUP BY operates on resolved column
     # aliases rather than CASE expressions — avoids Databricks MISSING_AGGREGATION.
@@ -642,6 +644,66 @@ def fetch_behaviour(conn) -> dict:
         GROUP BY year, region, dow
     """, conn)
 
+    # ── LOS distribution (global + region + country) ──────────────────────────
+    # Inner query is row-level; country_name is a real column so no extra wrapping needed.
+    df_los = query(f"""
+        SELECT year, region, country_name, bucket,
+               COUNT(*) AS reservations
+        FROM (
+            SELECT YEAR(r.reservation_planned_start_at)                                   AS year,
+                   ({REGION_CASE})                                                         AS region,
+                   p.country_name,
+                   CASE
+                       WHEN DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at) = 1  THEN '1 night'
+                       WHEN DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at) = 2  THEN '2 nights'
+                       WHEN DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at) = 3  THEN '3 nights'
+                       WHEN DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at) BETWEEN 4  AND 7  THEN '4-7 nights'
+                       WHEN DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at) BETWEEN 8  AND 14 THEN '8-14 nights'
+                       ELSE '15+ nights' END                                               AS bucket
+            FROM product.facts.fct_reservations r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.reservation_state_code NOT IN (4) AND r.is_reservation_deleted = FALSE
+              AND YEAR(r.reservation_planned_start_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))
+              AND DATEDIFF(r.reservation_planned_end_at, r.reservation_planned_start_at) > 0
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region, country_name, bucket
+    """, conn)
+
+    # ── Group size distribution (global + region + country) ───────────────────
+    df_gs = query(f"""
+        SELECT year, region, country_name, bucket,
+               COUNT(*) AS reservations
+        FROM (
+            SELECT YEAR(r.reservation_planned_start_at)  AS year,
+                   ({REGION_CASE})                        AS region,
+                   p.country_name,
+                   CASE
+                       WHEN r.person_count = 1 THEN '1 guest'
+                       WHEN r.person_count = 2 THEN '2 guests'
+                       WHEN r.person_count = 3 THEN '3 guests'
+                       WHEN r.person_count = 4 THEN '4 guests'
+                       ELSE '5+ guests' END               AS bucket
+            FROM product.facts.fct_reservations r
+            JOIN product.dimensions.dim_pms_properties p ON r.pms_property_id = p.pms_property_id
+            WHERE p.is_deleted = FALSE AND p.subscription_state = 'Enabled'
+              AND r.reservation_state_code NOT IN (4) AND r.is_reservation_deleted = FALSE
+              AND YEAR(r.reservation_planned_start_at) IN (2024, 2025)
+              AND CAST(p.pms_property_created_at AS DATE)
+                  < MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1)
+              AND (p.go_live_date IS NULL OR CAST(p.go_live_date AS DATE)
+                  <= DATE_SUB(MAKE_DATE(YEAR(r.reservation_planned_start_at), 1, 1), 90))
+              AND r.person_count > 0
+        ) t
+        WHERE region != 'Other'
+        GROUP BY year, region, country_name, bucket
+    """, conn)
+
     # ── Convert numeric columns ───────────────────────────────────────────────
     for df_b, cols in [
         (df_avg,  ["property_count", "total_los", "total_group_size", "total_lead_time", "res_count"]),
@@ -649,10 +711,40 @@ def fetch_behaviour(conn) -> dict:
         (df_lt,   ["reservations"]),
         (df_cin,  ["reservations"]),
         (df_cout, ["reservations"]),
+        (df_los,  ["reservations"]),
+        (df_gs,   ["reservations"]),
     ]:
         if not df_b.empty:
             for c in cols:
                 df_b[c] = _num(df_b, c)
+
+    # ── Shared distribution pivot (works for global / region / country) ────────
+    def _dist_pivot(df, bucket_order, region_filter=None, country_filter=None):
+        if df.empty:
+            return []
+        if country_filter:
+            sub = df[df["country_name"] == country_filter]
+        elif region_filter:
+            sub = df[df["region"] == region_filter]
+        else:
+            sub = df
+        if sub.empty:
+            return []
+        yr_totals = sub.groupby("year")["reservations"].sum().to_dict()
+        pivot = {}
+        for _, r in sub.iterrows():
+            b, yr_s = r["bucket"], str(int(r["year"]))
+            pivot.setdefault(b, {})[yr_s] = pivot.get(b, {}).get(yr_s, 0) + float(r["reservations"])
+        rows = []
+        for bucket in bucket_order:
+            if bucket in pivot:
+                entry = {"bucket": bucket}
+                for yr_s in ["2024", "2025"]:
+                    cnt = pivot[bucket].get(yr_s, 0)
+                    tot = float(yr_totals.get(int(yr_s), 1))
+                    entry[yr_s] = round(cnt / tot * 100, 1) if tot > 0 else 0
+                rows.append(entry)
+        return rows
 
     # ── Helper: build one behaviour dict for global or a specific region ───────
     def _build_slice(region_filter=None):
@@ -667,7 +759,8 @@ def fetch_behaviour(conn) -> dict:
         cin  = _filt(df_cin)
         cout = _filt(df_cout)
 
-        result = {"annual": [], "cancellations": [], "lead_time": [], "checkin_dow": [], "checkout_dow": []}
+        result = {"annual": [], "cancellations": [], "lead_time": [], "checkin_dow": [], "checkout_dow": [],
+                  "los_distribution": [], "group_size_distribution": []}
 
         if not avg.empty:
             for yr in [2024, 2025]:
@@ -734,13 +827,32 @@ def fetch_behaviour(conn) -> dict:
                     rows.append(entry)
             return rows
 
-        result["checkin_dow"]  = _dow_pivot(cin)
-        result["checkout_dow"] = _dow_pivot(cout)
+        result["checkin_dow"]         = _dow_pivot(cin)
+        result["checkout_dow"]        = _dow_pivot(cout)
+        result["los_distribution"]        = _dist_pivot(df_los, LOS_ORDER, region_filter)
+        result["group_size_distribution"] = _dist_pivot(df_gs,  GS_ORDER,  region_filter)
         return result
 
-    # ── Build output: global + one slice per region ───────────────────────────
+    # ── Build output: global + per region + per country ───────────────────────
     out = {"global": _build_slice()}
     out["regions"] = {region: _build_slice(region) for region in REGION_ORDER}
+
+    # Countries get LOS + group size distributions only (other metrics are region-level only)
+    out["countries"] = {}
+    if not df_los.empty:
+        for country in df_los["country_name"].dropna().unique():
+            if COUNTRY_TO_REGION.get(country) is None:
+                continue
+            los = _dist_pivot(df_los, LOS_ORDER, country_filter=country)
+            gs  = _dist_pivot(df_gs,  GS_ORDER,  country_filter=country)
+            if not los and not gs:
+                continue
+            out["countries"][country] = {
+                "region":                  COUNTRY_TO_REGION[country],
+                "los_distribution":        los,
+                "group_size_distribution": gs,
+            }
+
     return out
 
 # ── FX rate ───────────────────────────────────────────────────────────────────
